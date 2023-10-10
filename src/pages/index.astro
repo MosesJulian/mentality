@@ -1,9 +1,189 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import { Icon } from 'astro-icon';
 ---
 
 <Layout title="Mentality・Where Mental Health is Our Priority">
-	<main>
+	<Header />
+	<main class="overflow-x-hidden flex flex-col">
+		<section
+			data-inviewport="fade-slide-left"
+			class="min-h-[100dvh] flex gap-10 px-60 items-center justify-between"
+		>
+			<div class="flex flex-col gap-6 max-w-[30dvw]">
+				<h2 class="text-8xl font-semibold">You're Not Alone!</h2>
+				<p class="text-2xl font-light">There are a number of people also suffering like you. Be one of the first people to reach out for help. Find professional psychologists through our platform.</p>
+				<button
+					class="mt-3 w-fit bg-primary ring ring-black hover:ring-primary text-xl text-black transition-all hover:ring-offset-2 duration-300 font-semibold py-2 px-4 rounded-full"
+					aria-label="Take the First Step"
+				>
+					Take the First Step
+				</button>
+			</div>
 
+			<div class="grid grid-cols-2 gap-3 place-items-center max-w-[30dvw] w-full">
+				<img src="" class="col-span-1 w-full aspect-square rounded-se-full rounded-ss-full rounded-es-full" alt="Mentality" />
+				<img src="" class="col-span-1 w-full aspect-square rounded-se-full rounded-ss-full rounded-ee-full" alt="Mentality" />
+				<img src="" class="col-span-1 w-full aspect-square rounded-ee-full rounded-es-full rounded-ss-full" alt="Mentality" />
+			    <img src="" class="col-span-1 w-full aspect-square rounded-ee-full rounded-se-full rounded-es-full" alt="Mentality" />		
+			</div>
+		</section>
+		
+		<section
+			data-inviewport="fade-slide-right" 
+			class="bg-gray-900 flex flex-col gap-8 text-primary px-60 justify-center items-center text-center py-28"
+		>
+			<h1 class="text-6xl font-semibold">
+				Your mental health is just as important as your physical health.
+			</h1>
+			<p class="text-2xl font-light translate-x-9">
+				Don't wait until it's too late. Take the first step to relieve the pain and live a better life.
+				Remember pain might be inevitable but suffering is optional.
+			</p>
+		</section>
+		
+		<section
+			data-inviewport="fade-slide-down"
+			class="flex flex-col gap-32 text-green-700 px-60 justify-center items-center text-center py-28"
+		>
+			<div class="flex flex-col gap-8">
+				<h1 class="text-6xl font-semibold">Common Signs and Symptoms You Might be Ignoring—Don't</h1>
+				<p class="text-2xl font-light">
+					While there are alot of other signs and symptoms, here are some of the most common ones.
+				</p>
+			</div>
+
+			<div class="grid grid-cols-2 gap-32 items-center text-black">
+				<div
+					data-inviewport="fade-slide-left"
+					class="delay-300 col-span-1 flex gap-8 items-center justify-between"
+				>
+					<Icon name="tabler:mood-sad" class="w-44 aspect-square" />
+
+					<div>
+						<h1 class="text-3xl">Mood Changes</h1>
+						<p class="text-xl font-extralight">Feeling sad, depressed, anxious, or irritable for extended periods of time.</p>
+					</div>
+				</div>
+
+				<div
+					data-inviewport="fade-slide-right"
+					class="delay-1000 col-span-1 flex gap-8 items-center justify-between"
+				>
+					<Icon name="icon-park-outline:thinking-problem" class="w-44 aspect-square" />
+
+					<div class="flex flex-col gap-4 justify-center">
+						<h1 class="text-3xl">Changes in Thinking</h1>
+						<p class="text-xl font-extralight">Having difficulty concentrating, making decisions, or remembering things.</p>
+					</div>
+				</div>
+
+				<div
+					data-inviewport="fade-slide-left"
+					class="delay-1000 col-span-1 flex gap-8 items-center justify-between"
+				>
+					<Icon name="healthicons:social-work" class="w-44 aspect-square" />
+
+					<div class="flex flex-col gap-4 justify-center">
+						<h1 class="text-3xl">Changes in Behaviour</h1>
+						<p class="text-xl font-extralight">Withdrawing from social activities, neglecting personal hygiene, or engaging in risky behaviours</p>
+					</div>
+				</div>
+
+				<div
+					data-inviewport="fade-slide-right"
+					class="delay-0 col-span-1 flex gap-8 items-center justify-between"
+				>
+					<Icon name="healthicons:body" class="w-44 aspect-square" />
+					
+					<div class="flex flex-col gap-4 justify-center">
+						<h1 class="text-3xl">Physical Symptoms</h1>
+						<p class="text-xl font-extralight">Headaches, stomachaches, fatigue, or changes in sleep or appetite.</p>
+					</div>
+				</div>
+				<div
+					data-inviewport="fade-slide-left"
+					class="delay-1000 col-span-1 flex gap-8 items-center justify-between"
+				>
+					<Icon name="mdi:drug" class="w-44 aspect-square" />
+
+					<div class="flex flex-col gap-4 justify-center">
+						<h1 class="text-3xl">Substance Abuse</h1>
+						<p class="text-xl font-extralight">Using alcohol, tobacco, or other drugs more frequently or heavily.</p>
+					</div>
+				</div>
+
+				<div
+					data-inviewport="fade-slide-right"
+					class="delay-500 col-span-1 flex gap-8 items-center justify-between"
+				>
+					<Icon name="uil:heart-break" class="w-44 aspect-square" />
+					
+					<div class="flex flex-col gap-4 justify-center">
+						<h1 class="text-3xl">Thoughts of Suicide</h1>
+						<p class="text-xl font-extralight">Thinking about or even planning to end your life.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section
+			data-inviewport="fade-slide-down"
+			class="flex flex-col gap-8 text-primary px-60 justify-center items-center text-center py-28"
+		>
+			
+		</section>
 	</main>
 </Layout>
+
+<script>
+	const inViewport = (entries: Array<IntersectionObserverEntry>) => {
+		entries.forEach(entry => {
+			entry.target.classList.toggle('is-inViewport', entry.isIntersecting);
+		})
+	};
+
+	const observer = new IntersectionObserver(inViewport, {
+		threshold: 0.25,
+	});
+
+	document.querySelectorAll('[data-inviewport]').forEach(el => {
+		observer.observe(el);
+	});
+</script>
+
+<style>
+	[data-inviewport="fade-slide-down"] {
+		transition: 0.75s;
+		translate: 0 -150px;
+		opacity: 0;
+	}
+
+	[data-inviewport="fade-slide-down"].is-inViewport {
+		opacity: 1;
+		translate: 0 0;
+	}
+
+	[data-inviewport="fade-slide-left"] {
+		transition: 0.75s;
+		translate: -150px 0;
+		opacity: 0;
+	}
+
+	[data-inviewport="fade-slide-left"].is-inViewport {
+		opacity: 1;
+		translate: 0 0;
+	}
+
+	[data-inviewport="fade-slide-right"] {
+		transition: 0.75s;
+		translate: 150px 0;
+		opacity: 0;
+	}
+
+	[data-inviewport="fade-slide-right"].is-inViewport {
+		opacity: 1;
+		translate: 0 0;
+	}
+</style>
