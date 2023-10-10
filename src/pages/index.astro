@@ -1,9 +1,29 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
 ---
 
 <Layout title="Mentality・Where Mental Health is Our Priority">
-	<main>
+	<Header />
+	<main class="flex flex-col">
+		<div class="min-h-[80dvh] flex gap-10 px-60 items-center justify-between">
+			<div class="flex flex-col gap-6 max-w-[30dvw]">
+				<h2 class="text-8xl font-semibold">You're Not Alone!</h2>
+				<p class="text-2xl font-light">There are a number of people also suffering like you. Be one of the first people to reach out for help. Find professional psychologists through our platform.</p>
+				<button
+					class="mt-3 w-fit bg-primary ring ring-black hover:ring-primary text-xl text-black ransition-all hover:ring-offset-2 duration-300 font-semibold py-2 px-4 rounded-full"
+					aria-label="Take the First Step"
+				>
+					Take the First Step
+				</button>
+			</div>
 
+			<div class="grid grid-cols-2 gap-3 place-items-center max-w-[30dvw] w-full">
+				<img src="" class="w-full aspect-square rounded-se-full rounded-ss-full rounded-es-full" alt="Mentality" />
+				<img src="" class="w-full aspect-square rounded-se-full rounded-ss-full rounded-ee-full" alt="Mentality" />
+				<img src="" class="w-full aspect-square rounded-ee-full rounded-es-full rounded-ss-full" alt="Mentality" />
+			    <img src="" class="w-full aspect-square rounded-ee-full rounded-se-full rounded-es-full" alt="Mentality" />		
+			</div>
+		</div>
 	</main>
 </Layout>
