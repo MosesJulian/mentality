@@ -1,0 +1,127 @@
+---
+import Icon from 'astro-icon';
+import Layout from '../../layouts/Layout.astro';
+import PrimaryButton from '../../components/PrimaryButton.astro';
+
+export const prerender = false;
+
+type Expert = {
+  fullName: string;
+  biography: string;
+  academicBackground: string[];
+  clinicalSpeciality: string;
+  startYear: number;
+  location: string;
+  clinicName: string;
+  rating: number;
+  consulations: number;
+  pricePerHour: number;
+};
+
+const expert: Expert = {
+  fullName: 'Moses Julian, M.Psi, Psikolog',
+  biography:
+    'Moses Julian, M.Psi, Psikolog adalah Psikolog Klinis yang aktif melayani pasien di Klinik Aditi Psychological Center. Moses Julian, M.Psi, Psikolog mendapatkan gelar Psikolog Klinis setelah menamatkan pendidikan di Universitas Airlangga, Universitas Padjadjaran.',
+  academicBackground: ['Universitas Airlangga', 'Universitas Padjajaran'],
+  clinicalSpeciality:
+    'Stress dan gangguan kecemasan, depresi, permasalahan relasi, hubungan romantis, permasalahan keluarga dan pernikahan, pengembangan diri dan karir, quarter life crisis, self-esteem dan gangguan kepribadian dan mood.',
+  startYear: 2007,
+  location: 'Jakarta Selatan, Pancoran',
+  clinicName: 'Klinik Aditi Psychological Center',
+  rating: 4.7,
+  consulations: 100,
+  pricePerHour: 100000,
+};
+
+const yearsWorked = new Date().getFullYear() - expert.startYear;
+const moneyFormatter = new Intl.NumberFormat('id-ID', {
+  style: 'currency',
+  currency: 'IDR',
+});
+---
+
+<Layout title="Directory | Mentality・Where Mental Health is Our Priority">
+  <main class="flex flex-col px-60 py-12">
+    <div class="grid grid-cols-[minmax(0,400px)_minmax(0,1fr)] grid-rows-1 gap-x-6">
+      <div class="flex flex-col gap-6">
+        <img
+          class="rounded-lg w-full object-cover aspect-square border select-none max-h-[320px]"
+          src="https://picsum.photos/seed/picsum/200/300"
+          alt=""
+        />
+
+        <div class="flex flex-col gap-2">
+          <h3 class="font-semibold text-xl">Academic Background</h3>
+          <div class="flex flex-col gap-1">
+            {
+              expert.academicBackground.map((background) => (
+                <div class="text-slate-600 flex items-center gap-2">
+                  <Icon name="tabler:school" size={24} />
+                  <div>{background}</div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <h3 class="font-semibold text-xl">Biography</h3>
+          <div class="text-slate-600 text-sm w-full break-words">{expert.biography}</div>
+        </div>
+      </div>
+
+      <div class="flex flex-col items-start">
+        <h2 class="font-semibold text-2xl">{expert.fullName}</h2>
+
+        <div class="text-slate-600 mt-2 font-medium text-lg">{expert.clinicName}</div>
+        <div class="text-slate-600">{expert.location}</div>
+
+        <div class="flex gap-2 items-center mt-2">
+          <div
+            class="text-black bg-primary/20 px-2 py-1 rounded-md text-sm font-medium mt-2 flex gap-2 items-center"
+          >
+            <Icon name="tabler:briefcase" size={18} />
+            {yearsWorked} years
+          </div>
+
+          <div
+            class="text-black bg-primary/20 px-2 py-1 rounded-md text-sm font-medium mt-2 flex gap-2 items-center"
+          >
+            <Icon name="tabler:star" size={18} />
+            {expert.rating}
+          </div>
+        </div>
+
+        <div class="text-red-700 font-medium text-xl mt-4">
+          {moneyFormatter.format(expert.pricePerHour)}/hour
+        </div>
+
+        <h3 class="text-2xl font-semibold mt-8">Book a Consultation</h3>
+        <div class="flex items-center gap-4 mt-4 pb-2 overflow-x-auto max-w-full">
+          {
+            Array.from({ length: 2 }).map(() => (
+              <div class="text-center rounded-md border px-4 py-1 duration-200 cursor-pointer hover:border-primary hover:text-primary hover:brightness-[65%]">
+                <div class="text-sm">Wednesday</div>
+                <div>18 Oct</div>
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="h-px w-full bg-slate-300 mt-2"></div>
+
+        <div class="mt-6 flex flex-wrap gap-1">
+          {
+            Array.from({ length: 6 }).map(() => (
+              <div class="text-center rounded-md border px-4 py-1 duration-200 cursor-pointer hover:border-primary hover:text-primary hover:brightness-[65%]">
+                <div class="text-sm">17:00</div>
+              </div>
+            ))
+          }
+        </div>
+
+        <PrimaryButton class="mt-32 w-full">Book</PrimaryButton>
+      </div>
+    </div>
+  </main>
+</Layout>
