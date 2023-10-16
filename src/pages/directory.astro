@@ -2,6 +2,18 @@
 import Icon from 'astro-icon';
 import Layout from '../layouts/Layout.astro';
 import PrimaryButton from '../components/PrimaryButton.astro';
+import getCookieClaims from '../lib/firebase/auth/getCookieClaims';
+
+export const prerender = false;
+
+const sessionCookie = Astro.cookies.get('session')?.value;
+
+const isLoggedIn = await (async () => {
+  if (sessionCookie === undefined) return false;
+
+  const claims = await getCookieClaims(sessionCookie);
+  return claims !== null;
+})();
 ---
 
 <Layout title="Directory | Mentality・Where Mental Health is Our Priority">
@@ -20,50 +32,57 @@ import PrimaryButton from '../components/PrimaryButton.astro';
 
     <div class="grid grid-cols-3 gap-4 mt-8">
       {
-        Array.from({ length: 6 }).map((_, idx) => (
-          <a href={`/experts/${idx}`}>
-            <article class="rounded-lg border cursor-pointer transition-all duration-200 hover:shadow-md">
-              <img
-                class="w-full max-h-[240px] object-cover rounded-t-lg select-none"
-                src="https://picsum.photos/seed/picsum/200/300"
-                alt=""
-              />
+        Array.from({ length: 6 }).map((_, idx) => {
+          const actualUrl = `/experts/${idx}`;
 
-              <div class="px-3 pt-2 pb-4">
-                <h3 class="text-xl font-semibold">Moses Julian</h3>
-                <p class="text-ellipsis line-clamp-3 text-sm text-slate-600">
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio temporibus
-                  distinctio doloribus nam tempora architecto, placeat ea voluptate amet
-                  consequuntur molestias aliquam quod, beatae delectus minus! Nostrum, molestias
-                  inventore. Porro.
-                </p>
+          const anonymousUrlParams = new URLSearchParams();
+          anonymousUrlParams.append('redirect', actualUrl);
 
-                <div class="mt-3 flex items-center gap-2 text-slate-600 text-sm">
-                  <div class="flex items-center gap-2">
-                    <Icon name="tabler:star" size={18} />
-                    <span class="leading-[1.2] flex-1">4.5</span>
+          return (
+            <a href={isLoggedIn ? actualUrl : `/auth/signin/?${anonymousUrlParams.toString()}`}>
+              <article class="rounded-lg border cursor-pointer transition-all duration-200 hover:shadow-md">
+                <img
+                  class="w-full max-h-[240px] object-cover rounded-t-lg select-none"
+                  src="https://picsum.photos/seed/picsum/200/300"
+                  alt=""
+                />
+
+                <div class="px-3 pt-2 pb-4">
+                  <h3 class="text-xl font-semibold">Moses Julian</h3>
+                  <p class="text-ellipsis line-clamp-3 text-sm text-slate-600">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio temporibus
+                    distinctio doloribus nam tempora architecto, placeat ea voluptate amet
+                    consequuntur molestias aliquam quod, beatae delectus minus! Nostrum, molestias
+                    inventore. Porro.
+                  </p>
+
+                  <div class="mt-3 flex items-center gap-2 text-slate-600 text-sm">
+                    <div class="flex items-center gap-2">
+                      <Icon name="tabler:star" size={18} />
+                      <span class="leading-[1.2] flex-1">4.5</span>
+                    </div>
+
+                    <div class="w-px h-[16px] bg-slate-600" />
+
+                    <div class="leading-[1.2]">100 consultations</div>
                   </div>
 
-                  <div class="w-px h-[16px] bg-slate-600" />
+                  <div class="flex items-center mt-2 gap-2 text-slate-600 text-sm">
+                    <Icon name="tabler:map-pin" size={18} />
+                    <span class="leading-[1.2] flex-1">Jakarta Timur</span>
+                  </div>
 
-                  <div class="leading-[1.2]">100 consultations</div>
+                  <div class="flex items-center mt-2 gap-2 text-slate-600 text-sm">
+                    <Icon name="tabler:building-hospital" size={18} />
+                    <span class="leading-[1.2] flex-1">Klinik Aditi Psychological Center</span>
+                  </div>
+
+                  <PrimaryButton class="mt-6 w-full">Consult</PrimaryButton>
                 </div>
-
-                <div class="flex items-center mt-2 gap-2 text-slate-600 text-sm">
-                  <Icon name="tabler:map-pin" size={18} />
-                  <span class="leading-[1.2] flex-1">Jakarta Timur</span>
-                </div>
-
-                <div class="flex items-center mt-2 gap-2 text-slate-600 text-sm">
-                  <Icon name="tabler:building-hospital" size={18} />
-                  <span class="leading-[1.2] flex-1">Klinik Aditi Psychological Center</span>
-                </div>
-
-                <PrimaryButton class="mt-6 w-full">Consult</PrimaryButton>
-              </div>
-            </article>
-          </a>
-        ))
+              </article>
+            </a>
+          );
+        })
       }
     </div>
   </main>

@@ -4,6 +4,8 @@
     "@astrojs/tailwind": "^5.0.1",
     "astro": "^3.2.3",
     "astro-icon": "^0.8.1",
+    "firebase": "^10.5.0",
+    "firebase-admin": "^11.11.0",
     "solid-js": "^1.4.3",
     "tailwindcss": "^3.0.24"
   },
@@ -11,6 +13,7 @@
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
     "astro-eslint-parser": "^0.16.0",
+    "dotenv": "^16.3.1",
     "eslint": "^8.51.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-astro": "^0.29.1",
@@ -25,7 +28,9 @@
     "format": "prettier --write --ignore-unknown --ignore-path .gitignore \"**/*.{astro,ts,tsx,mjs,js,json,md}\" .",
     "lint": "eslint . --fix",
     "preview": "astro preview",
-    "start": "astro dev"
+    "start": "astro dev",
+    "drizzle:generate": "drizzle-kit generate:pg",
+    "drizzle:studio": "drizzle-kit studio"
   },
   "type": "module",
   "version": "0.0.1"
