@@ -23,7 +23,7 @@
     "build": "astro build",
     "dev": "astro dev",
     "format": "prettier --write --ignore-unknown --ignore-path .gitignore \"**/*.{astro,ts,tsx,mjs,js,json,md}\" .",
-    "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx,.astro",
+    "lint": "eslint . --fix",
     "preview": "astro preview",
     "start": "astro dev"
   },
