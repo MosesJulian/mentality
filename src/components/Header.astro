@@ -1,19 +1,37 @@
 ---
+
 ---
 
-<header class="fixed top-0 left-0 right-0 flex items-center justify-between gap-10 px-60 py-4 shadow bg-white bg-opacity-80 backdrop-blur-md z-10">
-    <a href="/">
-        <h1 class="text-2xl font-semibold">Mentality</h1>
+<header
+  class="sticky top-0 left-0 right-0 flex items-center justify-between gap-10 px-60 py-6 bg-white bg-opacity-80 backdrop-blur-md z-10 transition-all duration-200"
+  data-header
+>
+  <a href="/">
+    <h1 class="text-2xl font-semibold">Mentality</h1>
+  </a>
+
+  <nav class="flex items-center justify-around gap-4">
+    <a href="">
+      <button
+        class="font-semibold text-black ring-2 ring-black hover:ring-primary hover:ring-offset-2 rounded-full px-4 py-2 bg-primary transition-all duration-200"
+        aria-label="Take the First Step"
+      >
+        Take the First Step
+      </button>
     </a>
-    
-    <nav class="flex items-center justify-around gap-4">
-        <a href="">
-            <button
-                class="font-semibold text-black ring ring-black hover:ring-primary rounded-full px-4 py-2 bg-primary transition-all duration-500 hover:ring-offset-2"
-                aria-label="Take the First Step"
-            >
-                Take the First Step
-            </button>     
-        </a>
-    </nav>
+  </nav>
 </header>
+
+<script>
+  const SCROLL_THRESHOLD = 30;
+
+  window.addEventListener('scroll', () => {
+    document.querySelectorAll('[data-header]').forEach((el) => {
+      if (window.scrollY > SCROLL_THRESHOLD) {
+        el.classList.add('shadow-md');
+      } else {
+        el.classList.remove('shadow-md');
+      }
+    });
+  });
+</script>

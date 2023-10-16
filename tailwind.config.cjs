@@ -4,10 +4,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#3FEF54',
-        secondary: '#9AECCE',
-        tertiary: '#5CEF79',
-        quarternary: '#78EA9C',
+        primary: 'hsl(var(--color-primary) / <alpha-value>)',
+        secondary: 'hsl(var(--color-secondary) / <alpha-value>)',
+        black: 'hsl(var(--color-black) / <alpha-value>)',
       },
     },
   },

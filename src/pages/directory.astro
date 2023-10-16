@@ -1,0 +1,58 @@
+---
+import Icon from 'astro-icon';
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Mentality・Where Mental Health is Our Priority">
+  <main class="flex flex-col px-60 py-12">
+    <h2 class="text-4xl font-semibold w-2/3 break-words">
+      Find a Psychologist Who Can Help You Heal and Thrive
+    </h2>
+
+    <p class="text-slate-600 mt-4">
+      Life can be challenging at times, and everyone needs help from time to time. A psychologist
+      can offer you the support and guidance you need to overcome your challenges and live your best
+      life. Our directory of psychologists makes it easy to find a qualified professional who can
+      help you with your specific needs. Whether you're struggling with anxiety, depression,
+      relationship problems, or life transitions, we have a psychologist who can help.
+    </p>
+
+    <div class="grid grid-cols-3 gap-4 mt-8">
+      {
+        Array.from({ length: 6 }).map(() => (
+          <article class="rounded-lg border cursor-pointer transition-all duration-200 hover:shadow-md">
+            <img
+              class="w-full max-h-[240px] object-cover rounded-t-lg"
+              src="https://picsum.photos/seed/picsum/200/300"
+              alt=""
+            />
+
+            <div class="px-3 pt-2 pb-4">
+              <h3 class="text-xl font-semibold">Moses Julian</h3>
+              <p class="text-ellipsis line-clamp-3 text-sm text-slate-600">
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio temporibus
+                distinctio doloribus nam tempora architecto, placeat ea voluptate amet consequuntur
+                molestias aliquam quod, beatae delectus minus! Nostrum, molestias inventore. Porro.
+              </p>
+
+              <div class="mt-3 flex items-center gap-2 text-slate-600 text-sm">
+                <div class="flex items-center gap-1">
+                  <Icon name="tabler:star" size={18} />
+                  <span>4.5</span>
+                </div>
+
+                <div class="w-px h-[16px] bg-slate-600" />
+
+                <div>100 consultations</div>
+              </div>
+
+              <button class="w-full py-2 bg-primary mt-4 rounded-md text-black font-medium border-2 border-primary transition-colors duration-200 hover:bg-white hover:text-primary">
+                Consult
+              </button>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </main>
+</Layout>

@@ -2,7 +2,8 @@
   "compilerOptions": {
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": false,
+    "isolatedModules": false
   },
   "extends": "astro/tsconfigs/strict"
 }
