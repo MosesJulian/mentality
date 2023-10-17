@@ -1,9 +1,15 @@
 import { FirebaseOptions, initializeApp } from 'firebase/app';
 import { GoogleAuthProvider } from 'firebase/auth';
 import { getAuth } from 'firebase/auth';
-import { CollectionReference, DocumentData, collection, getFirestore } from 'firebase/firestore';
-import { USERS_COL } from './constants';
-import { User } from './types';
+import {
+  CollectionReference,
+  DocumentData,
+  DocumentReference,
+  collection,
+  getFirestore,
+} from 'firebase/firestore';
+import { BOOKINGS_COL, EXPERTS_COL, USERS_COL } from './constants';
+import { Booking, BookingChat, Expert, User } from './types';
 
 const firebaseConfig: FirebaseOptions = {
   apiKey: 'AIzaSyDz9XwIuBOMMXoic5LiKxRKbZW3FAtjRrk',
@@ -27,6 +33,10 @@ const createCollection = <T = DocumentData>(path: string, ...pathSegments: strin
 
 export const collections = {
   users: createCollection<Omit<User, 'id'>>(USERS_COL),
+  experts: createCollection<Omit<Expert, 'id'>>(EXPERTS_COL),
+  bookings: createCollection<Omit<Booking, 'id'>>(BOOKINGS_COL),
+  bookingChats: (bookingId: string) =>
+    createCollection<Omit<BookingChat, 'id'>>(BOOKINGS_COL, bookingId, 'chats'),
 };
 
 export default app;
