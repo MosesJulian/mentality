@@ -4,5 +4,6 @@
   "eslint.validate": ["javascript", "javascriptreact", "astro", "typescript", "typescriptreact"],
   "[astro]": {
     "editor.defaultFormatter": "astro-build.astro-vscode"
-  }
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

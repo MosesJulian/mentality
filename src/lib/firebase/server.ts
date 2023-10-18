@@ -1,6 +1,14 @@
-import { initializeApp, cert, ServiceAccount } from 'firebase-admin/app';
+import { initializeApp, cert, type ServiceAccount } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
-import { getFirestore } from 'firebase-admin/firestore';
+import {
+  getFirestore,
+  type DocumentData,
+  type FirestoreDataConverter,
+  QueryDocumentSnapshot,
+  DocumentReference,
+} from 'firebase-admin/firestore';
+import { BOOKINGS_COL, BOOKING_CHATS_COL, EXPERTS_COL, USERS_COL } from './constants';
+import type { Booking, BookingChat, Expert, User } from './types';
 
 const serviceAccount = {
   type: 'service_account',
@@ -22,5 +30,25 @@ const app = initializeApp({
 
 export const auth = getAuth(app);
 export const firestore = getFirestore(app);
+
+const converter = <T extends DocumentData>(): FirestoreDataConverter<T> => ({
+  toFirestore: (data) => data,
+  fromFirestore: (snap: QueryDocumentSnapshot) => snap.data() as T,
+});
+
+const createCollection = <T extends DocumentData>(
+  path: string,
+  parent: Pick<DocumentReference, 'collection'> = firestore,
+) => {
+  return parent.collection(path).withConverter(converter<T>());
+};
+
+export const collections = {
+  users: createCollection<Omit<User, 'id'>>(USERS_COL),
+  experts: createCollection<Omit<Expert, 'id'>>(EXPERTS_COL),
+  bookings: createCollection<Omit<Booking, 'id'>>(BOOKINGS_COL),
+  bookingChats: (bookingId: string) =>
+    createCollection(BOOKING_CHATS_COL, collections.bookings.doc(bookingId)),
+};
 
 export default app;

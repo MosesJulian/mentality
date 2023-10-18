@@ -1,15 +1,16 @@
-import { FirebaseOptions, initializeApp } from 'firebase/app';
+import { type FirebaseOptions, initializeApp } from 'firebase/app';
 import { GoogleAuthProvider } from 'firebase/auth';
 import { getAuth } from 'firebase/auth';
 import {
   CollectionReference,
-  DocumentData,
-  DocumentReference,
+  type DocumentData,
   collection,
   getFirestore,
+  type FirestoreDataConverter,
+  QueryDocumentSnapshot,
 } from 'firebase/firestore';
 import { BOOKINGS_COL, EXPERTS_COL, USERS_COL } from './constants';
-import { Booking, BookingChat, Expert, User } from './types';
+import type { Booking, BookingChat, Expert, User } from './types';
 
 const firebaseConfig: FirebaseOptions = {
   apiKey: 'AIzaSyDz9XwIuBOMMXoic5LiKxRKbZW3FAtjRrk',
@@ -27,8 +28,13 @@ export const googleProvider = new GoogleAuthProvider();
 
 export const firestore = getFirestore(app);
 
-const createCollection = <T = DocumentData>(path: string, ...pathSegments: string[]) => {
-  return collection(firestore, path, ...pathSegments) as CollectionReference<T>;
+const converter = <T extends DocumentData>(): FirestoreDataConverter<T> => ({
+  toFirestore: (data) => data,
+  fromFirestore: (snap: QueryDocumentSnapshot) => snap.data() as T,
+});
+
+const createCollection = <T extends DocumentData>(path: string, ...pathSegments: string[]) => {
+  return collection(firestore, path, ...pathSegments).withConverter(converter<T>());
 };
 
 export const collections = {
