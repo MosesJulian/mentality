@@ -1,5 +1,5 @@
 ---
-import PrimaryButton from '../../components/PrimaryButton.astro';
+import LoginForm from '../../components/solid/LoginForm';
 import Layout from '../../layouts/Layout.astro';
 
 import getCookieClaims from '../../lib/firebase/auth/getCookieClaims';
@@ -16,54 +16,6 @@ if (sessionCookie !== undefined) {
 
 <Layout title="Login | Mentality・Where Mental Health is Our Priority">
   <main class="flex flex-col px-60 py-12 h-full w-full">
-    <PrimaryButton data-login-with-google-button>Login with Google</PrimaryButton>
+    <LoginForm client:load />
   </main>
 </Layout>
-
-<script>
-  import { signInWithPopup, browserSessionPersistence } from 'firebase/auth';
-  import { setDoc, doc } from 'firebase/firestore';
-  import { auth, googleProvider, collections } from '../../lib/firebase/client';
-
-  await auth.setPersistence(browserSessionPersistence);
-
-  document.querySelectorAll('[data-login-with-google-button]').forEach((el) => {
-    el.addEventListener('click', async () => {
-      try {
-        el.textContent = '...';
-
-        const { user } = await signInWithPopup(auth, googleProvider);
-        if (user.email === null) return;
-
-        const signInPromise = new Promise<Response>(async (resolve) => {
-          const idToken = await user.getIdToken();
-          const response = await fetch('/api/auth/signin', {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${idToken}`,
-            },
-          });
-
-          resolve(response);
-        });
-
-        const createUserPromise = setDoc(doc(collections.users, user.uid), {
-          name: user.displayName ?? '',
-          email: user.email ?? '',
-          authProvider: 'google',
-        });
-
-        const [response] = await Promise.all([signInPromise, createUserPromise]);
-        const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
-
-        if (redirectUrl !== null && redirectUrl.startsWith('/')) {
-          window.location.assign(redirectUrl);
-        } else if (response.redirected) {
-          window.location.assign(response.url);
-        }
-      } finally {
-        el.textContent = 'Login with Google';
-      }
-    });
-  });
-</script>
