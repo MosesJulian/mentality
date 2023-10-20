@@ -1,10 +1,10 @@
 ---
 import Icon from 'astro-icon';
-import { eachDayOfInterval, add, format } from 'date-fns';
 import Layout from '../../layouts/Layout.astro';
-import PrimaryButton from '../../components/solid/shared/PrimaryButton';
 import getCookieClaims from '../../lib/firebase/auth/getCookieClaims';
-import { Expert } from '../../lib/firebase/types';
+import { type Expert } from '../../lib/firebase/types';
+import Wrapper from '../../components/solid/shared/Wrapper';
+import BookingForm from '../../components/solid/BookingForm';
 
 export const prerender = false;
 
@@ -30,7 +30,7 @@ const expert: Expert = {
   pricePerHour: 100000,
   availableDaysPerWeek: [1, 2, 3, 4, 5],
   availableHoursPerDay: [9, 10, 11, 12, 13, 14, 15, 16, 17],
-  takenHours: ['10-18:10', '10-18:11'],
+  takenHours: ['2023-10-24 10', '2023-10-24 11'],
 };
 
 const yearsWorked = new Date().getFullYear() - expert.startYear;
@@ -38,38 +38,15 @@ const moneyFormatter = new Intl.NumberFormat('id-ID', {
   style: 'currency',
   currency: 'IDR',
 });
-
-const now = new Date();
-
-const daysToDisplay = eachDayOfInterval({ start: now, end: add(now, { weeks: 1 }) })
-  .filter((date) => expert.availableDaysPerWeek.includes(date.getDay()))
-  .map((date) => ({
-    date,
-    representation: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
-  }));
-
-const hoursToDisplay = daysToDisplay.map((date) => {
-  const hours = expert.availableHoursPerDay
-    .map((hour) => {
-      return {
-        hour,
-        representation: `${date.representation}:${hour}`,
-        dayRepresentation: date.representation,
-      };
-    })
-    .filter((hour) => {
-      const isTaken = expert.takenHours.includes(hour.representation);
-      return !isTaken;
-    });
-
-  return hours;
-});
 ---
 
 <Layout title="Directory | Mentality・Where Mental Health is Our Priority">
-  <main data-expert-id={expert.id} data-uid={claims.uid} class="flex flex-col px-60 py-12">
-    <div class="grid grid-cols-[minmax(0,400px)_minmax(0,1fr)] grid-rows-1 gap-x-6">
-      <div class="flex flex-col gap-6">
+  <Wrapper class="h-[calc(100vh-150px)]">
+    <div data-expert-id={expert.id} data-uid={claims.uid}></div>
+
+    <div class="h-full grid grid-cols-[minmax(0,400px)_minmax(0,1fr)] grid-rows-1 gap-x-6">
+      <!-- Left side -->
+      <div class="flex flex-col gap-6 overflow-y-auto">
         <img
           class="rounded-lg w-full object-cover aspect-square border select-none max-h-[320px]"
           src="https://picsum.photos/seed/picsum/200/300"
@@ -94,8 +71,14 @@ const hoursToDisplay = daysToDisplay.map((date) => {
           <h3 class="font-semibold text-xl">Biography</h3>
           <div class="text-slate-600 text-sm w-full break-words">{expert.biography}</div>
         </div>
+
+        <div class="flex flex-col gap-2">
+          <h3 class="font-semibold text-xl">Clinical Speciality</h3>
+          <div class="text-slate-600 text-sm w-full break-words">{expert.clinicalSpeciality}</div>
+        </div>
       </div>
 
+      <!-- Right side -->
       <div class="flex flex-col items-start">
         <h2 class="font-semibold text-2xl">{expert.fullName}</h2>
 
@@ -122,216 +105,16 @@ const hoursToDisplay = daysToDisplay.map((date) => {
           {moneyFormatter.format(expert.pricePerHour)}/hour
         </div>
 
-        <h3 class="text-2xl font-semibold mt-8">Book a Consultation</h3>
-        <div class="flex items-center gap-4 mt-4 pb-2 overflow-x-auto max-w-full">
-          {
-            daysToDisplay.map(({ date, representation }) => (
-              <div
-                data-day={representation}
-                class="text-center rounded-md border px-4 py-1 duration-200 cursor-pointer hover:border-primary-dark hover:text-primary-dark"
-              >
-                <div class="text-sm">{format(date, 'EEEE')}</div>
-                <div class="whitespace-nowrap">{format(date, 'dd MMM')}</div>
-              </div>
-            ))
-          }
-        </div>
-
-        <div class="h-px w-full bg-slate-300 mt-2"></div>
-
-        <div class="mt-6 flex flex-wrap gap-1">
-          {
-            hoursToDisplay.map((hours) =>
-              hours.map(({ hour, representation, dayRepresentation }) => (
-                <div
-                  data-hour-day={dayRepresentation}
-                  data-hour={representation}
-                  class="hidden text-center rounded-md border px-4 py-1 duration-200 cursor-pointer hover:border-primary-dark hover:text-primary-dark"
-                >
-                  <div class="text-sm">{`${hour}:00 - ${hour + 1}:00`}</div>
-                </div>
-              )),
-            )
-          }
-        </div>
-
-        <PrimaryButton data-book-button class="mt-28 w-full">Book</PrimaryButton>
+        <BookingForm
+          class="flex-1"
+          availableDaysPerWeek={expert.availableDaysPerWeek}
+          availableHoursPerDay={expert.availableHoursPerDay}
+          takenHours={expert.takenHours}
+          userId={claims.uid}
+          expertId={expert.id}
+          client:load
+        />
       </div>
     </div>
-  </main>
-
-  <div data-modal class="hidden fixed inset-0 overflow-y-auto z-10">
-    <div data-modal-bg class="fixed inset-0 bg-black bg-opacity-25"></div>
-
-    <div class="flex min-h-full items-center justify-center p-4 text-center">
-      <div
-        class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
-      >
-        <form data-confirmation-form>
-          <label class="text-2xl font-semibold">Booking Details</label>
-
-          <textarea
-            name="details"
-            class="mt-4 w-full border px-2 py-1 resize-y focus-visible:border-primary-dark"
-            placeholder="What are you looking for?"
-            cols="30"
-            rows="10"
-            data-confirmation-details></textarea>
-
-          <PrimaryButton data-confirmation-button class="mt-2 w-full">Confirm</PrimaryButton>
-        </form>
-      </div>
-    </div>
-  </div>
+  </Wrapper>
 </Layout>
-
-<script>
-  import { addDoc } from 'firebase/firestore';
-  import { collections } from '../../lib/firebase/client';
-
-  let selectedHour: string, selectedDay: string;
-
-  const uid = (() => {
-    const uid = document.querySelector('[data-uid]')?.attributes.getNamedItem('data-uid')?.value;
-    if (uid === undefined) return undefined;
-
-    return uid;
-  })();
-
-  const expertId = (() => {
-    const expertId = document
-      .querySelector('[data-expert-id]')
-      ?.attributes.getNamedItem('data-expert-id')?.value;
-
-    if (expertId === undefined) return undefined;
-
-    return expertId;
-  })();
-
-  if (uid === undefined) throw new Error('uid is undefined');
-  if (expertId === undefined) throw new Error('expertId is undefined');
-
-  const setBookButtonEnabled = (enabled: boolean) => {
-    document.querySelectorAll('[data-book-button]').forEach((element) => {
-      (element as HTMLButtonElement).disabled = !enabled;
-    });
-  };
-
-  const selectDay = (element: Element, dayRepresentation: string) => {
-    if (selectedDay === dayRepresentation) return;
-
-    selectedDay = dayRepresentation;
-
-    document.querySelectorAll('[data-day]').forEach((element) => {
-      element.classList.remove('border-primary-dark', 'text-primary-dark');
-    });
-
-    element.classList.add('border-primary-dark', 'text-primary-dark');
-
-    document.querySelectorAll('[data-hour-day]').forEach((element) => {
-      element.classList.add('hidden');
-    });
-
-    document.querySelectorAll(`[data-hour-day="${dayRepresentation}"]`).forEach((element) => {
-      element.classList.remove('hidden');
-    });
-
-    setBookButtonEnabled(false);
-  };
-
-  const selectHour = (element: Element, hourRepresentation: string) => {
-    if (selectedHour === hourRepresentation) return;
-
-    selectedHour = hourRepresentation;
-
-    document.querySelectorAll('[data-hour]').forEach((element) => {
-      element.classList.remove('border-primary-dark', 'text-primary-dark');
-    });
-
-    element.classList.add('border-primary-dark', 'text-primary-dark');
-    setBookButtonEnabled(true);
-  };
-
-  const showConfirmationModal = () => {
-    document.querySelectorAll('[data-modal]').forEach((el) => {
-      el.classList.remove('hidden');
-    });
-  };
-
-  document.querySelectorAll('[data-day]').forEach((element) => {
-    element.addEventListener('click', () => {
-      const day = element.attributes.getNamedItem('data-day')?.value;
-      if (day === undefined) return;
-
-      selectDay(element, day);
-    });
-  });
-
-  document.querySelectorAll('[data-hour]').forEach((element) => {
-    element.addEventListener('click', () => {
-      const hour = element.attributes.getNamedItem('data-hour')?.value;
-      if (hour === undefined) return;
-
-      selectHour(element, hour);
-    });
-  });
-
-  document.querySelectorAll('[data-modal-bg]').forEach((element) => {
-    element.addEventListener('click', () => {
-      document.querySelectorAll('[data-modal]').forEach((element) => {
-        element.classList.add('hidden');
-      });
-    });
-  });
-
-  document.querySelectorAll('[data-book-button]').forEach((element) => {
-    element.addEventListener('click', async () => {
-      showConfirmationModal();
-      return;
-    });
-  });
-
-  document.querySelectorAll('[data-confirmation-form]').forEach((element) => {
-    element.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      document.querySelectorAll('[data-modal]').forEach((element) => {
-        element.classList.add('hidden');
-      });
-
-      document.querySelectorAll('[data-confirmation-button').forEach((element) => {
-        element.textContent = '...';
-      });
-
-      try {
-        const details = document
-          .querySelector('[data-confirmation-details]')
-          ?.attributes.getNamedItem('value')?.value;
-
-        if (details == null) return;
-
-        await addDoc(collections.bookings, {
-          userId: uid,
-          expertId,
-          details,
-          hour: selectedHour,
-          isConfirmed: false,
-        });
-      } finally {
-        document.querySelectorAll('[data-confirmation-button').forEach((element) => {
-          element.textContent = 'Book';
-          window.location.assign('/bookings');
-        });
-      }
-    });
-  });
-
-  setBookButtonEnabled(false);
-
-  const firstDayEl = document.querySelector('[data-day]');
-  const firstDayRepresentation = firstDayEl?.attributes.getNamedItem('data-day')?.value;
-
-  if (firstDayEl !== null && firstDayRepresentation !== undefined) {
-    selectDay(firstDayEl, firstDayRepresentation);
-  }
-</script>

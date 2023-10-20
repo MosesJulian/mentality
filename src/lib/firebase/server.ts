@@ -48,7 +48,10 @@ export const collections = {
   experts: createCollection<Omit<Expert, 'id'>>(EXPERTS_COL),
   bookings: createCollection<Omit<Booking, 'id'>>(BOOKINGS_COL),
   bookingChats: (bookingId: string) =>
-    createCollection(BOOKING_CHATS_COL, collections.bookings.doc(bookingId)),
+    createCollection<Omit<BookingChat, 'id'>>(
+      BOOKING_CHATS_COL,
+      collections.bookings.doc(bookingId),
+    ),
 };
 
 export default app;

@@ -1,27 +1,30 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import PrimaryButton from '../../components/solid/shared/PrimaryButton';
+import Wrapper from '../../components/solid/shared/Wrapper';
 
 export const prerender = false;
 ---
 
 <Layout title="Chat | Mentality・Where Mental Health is Our Priority">
-  <main class="h-[calc(100vh-160px)] px-60 pb-12 flex flex-col">
-    <h2 class="text-4xl font-semibold">Chat</h2>
+  <Wrapper>
+    <main class="h-[calc(100vh-160px)] px-60 pb-12 flex flex-col">
+      <h2 class="text-4xl font-semibold">Chat</h2>
 
-    <ul id="message-list" class="h-full mt-8 flex flex-col gap-2 pb-4 overflow-y-auto"></ul>
+      <ul id="message-list" class="h-full mt-8 flex flex-col gap-2 pb-4 overflow-y-auto"></ul>
 
-    <form data-message-form autocomplete="off" class="flex items-center gap-2 mt-4">
-      <input
-        class="rounded-md flex-1 border px-4 py-2"
-        type="text"
-        data-message-input
-        placeholder="Say something..."
-      />
+      <form data-message-form autocomplete="off" class="flex items-center gap-2 mt-4">
+        <input
+          class="rounded-md flex-1 border px-4 py-2"
+          type="text"
+          data-message-input
+          placeholder="Say something..."
+        />
 
-      <PrimaryButton class="px-6">Send</PrimaryButton>
-    </form>
-  </main>
+        <PrimaryButton class="px-6">Send</PrimaryButton>
+      </form>
+    </main>
+  </Wrapper>
 </Layout>
 
 <script>

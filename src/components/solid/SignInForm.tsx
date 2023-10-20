@@ -4,14 +4,14 @@ import { browserSessionPersistence, signInWithPopup } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import PrimaryButton from './shared/PrimaryButton';
 
-const LoginForm = () => {
+const SignInForm = () => {
   const [isLoading, setLoading] = createSignal(false);
 
   onMount(async () => {
     await auth.setPersistence(browserSessionPersistence);
   });
 
-  const handleLogin = async () => {
+  const handleSignIn = async () => {
     setLoading(true);
 
     try {
@@ -40,7 +40,7 @@ const LoginForm = () => {
 
       const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
 
-      if (redirectUrl !== null && redirectUrl.startsWith('/')) {
+      if (redirectUrl !== null && redirectUrl.trim().length > 0) {
         window.location.assign(redirectUrl);
       } else if (response.redirected) {
         window.location.assign(response.url);
@@ -51,7 +51,7 @@ const LoginForm = () => {
   };
 
   return (
-    <PrimaryButton disabled={isLoading()} onClick={handleLogin}>
+    <PrimaryButton disabled={isLoading()} onClick={handleSignIn}>
       <Show when={!isLoading()} fallback="...">
         Login with Google
       </Show>
@@ -59,4 +59,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default SignInForm;

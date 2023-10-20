@@ -3,6 +3,7 @@ import Icon from 'astro-icon';
 import Layout from '../layouts/Layout.astro';
 import PrimaryButton from '../components/solid/shared/PrimaryButton';
 import getCookieClaims from '../lib/firebase/auth/getCookieClaims';
+import Wrapper from '../components/solid/shared/Wrapper';
 
 export const prerender = false;
 
@@ -17,7 +18,7 @@ const isLoggedIn = await (async () => {
 ---
 
 <Layout title="Directory | Mentality・Where Mental Health is Our Priority">
-  <main class="flex flex-col px-60 py-12">
+  <Wrapper class="py-12">
     <h2 class="text-4xl font-semibold w-2/3 break-words">
       Find a Psychologist Who Can Help You Heal and Thrive
     </h2>
@@ -85,5 +86,5 @@ const isLoggedIn = await (async () => {
         })
       }
     </div>
-  </main>
+  </Wrapper>
 </Layout>

@@ -2,9 +2,9 @@
   "dependencies": {
     "@astrojs/solid-js": "^3.0.2",
     "@astrojs/tailwind": "^5.0.1",
+    "@tabler/icons-solidjs": "^2.39.0",
     "astro": "^3.2.3",
     "astro-icon": "^0.8.1",
-    "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
     "firebase": "^10.5.0",

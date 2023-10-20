@@ -3,12 +3,10 @@ export type User = {
   name: string;
   email: string;
   authProvider: 'google' | 'email';
+  phoneNumber?: string;
+  dateOfBirth?: string;
+  gender?: string;
 };
-
-/**
- * YEAR-MONTH-DATE:HOUR, e.g 2021-10-09:19.
- */
-export type HourRepresentation = string;
 
 export type Expert = {
   id: string;
@@ -24,7 +22,7 @@ export type Expert = {
   pricePerHour: number;
   availableDaysPerWeek: number[];
   availableHoursPerDay: number[];
-  takenHours: HourRepresentation[];
+  takenHours: BookingHour[];
 };
 
 export type Booking = {
@@ -32,13 +30,19 @@ export type Booking = {
   userId: string;
   expertId: string;
   details: string;
-  hour: HourRepresentation;
-  isConfirmed: boolean;
+  hour: BookingHour;
+  status: 'confirmed' | 'cancelled' | 'pending';
 };
 
 export type BookingChat = {
   id: string;
+  bookingId: string;
   message: string;
   isSenderUser: boolean;
   sentAt: Date;
 };
+
+/**
+ * YEAR-MONTH-DATE:HOUR, e.g 2021-10-09:19.
+ */
+export type BookingHour = string;

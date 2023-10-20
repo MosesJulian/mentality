@@ -1,5 +1,6 @@
 ---
-import LoginForm from '../../components/solid/LoginForm';
+import LoginForm from '../../components/solid/SignInForm';
+import Wrapper from '../../components/solid/shared/Wrapper';
 import Layout from '../../layouts/Layout.astro';
 
 import getCookieClaims from '../../lib/firebase/auth/getCookieClaims';
@@ -15,7 +16,7 @@ if (sessionCookie !== undefined) {
 ---
 
 <Layout title="Login | Mentality・Where Mental Health is Our Priority">
-  <main class="flex flex-col px-60 py-12 h-full w-full">
+  <Wrapper class="h-[calc(100vh-150px)] flex items-center justify-center">
     <LoginForm client:load />
-  </main>
+  </Wrapper>
 </Layout>

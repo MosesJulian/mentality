@@ -1,14 +1,15 @@
 ---
-import DirectoryButton from '../components/DirectoryButton.astro';
+import DirectoryLink from '../components/solid/shared/DirectoryLink';
+import Wrapper from '../components/solid/shared/Wrapper';
 import Layout from '../layouts/Layout.astro';
 import Icon from 'astro-icon';
 ---
 
-<Layout title="Mentality・Where Mental Health is Our Priority">
-  <main class="overflow-x-hidden flex flex-col">
+<Layout title="Mentality・Where Mental Health is Our Priority" class="py-0 overflow-x-hidden">
+  <Wrapper>
     <section
       data-inviewport="fade-slide-left"
-      class="min-h-[calc(100vh-90px)] flex gap-10 px-60 items-center justify-between"
+      class="min-h-[calc(100vh-90px)] flex gap-10 items-center justify-between"
     >
       <div class="flex flex-col gap-6 max-w-[30dvw]">
         <h2 class="text-6xl font-semibold">You're Not Alone!</h2>
@@ -17,7 +18,7 @@ import Icon from 'astro-icon';
           out for help. Find professional psychologists through our platform.
         </p>
 
-        <DirectoryButton />
+        <DirectoryLink class="w-fit" />
       </div>
 
       <div class="max-w-[20dvw] w-full">
@@ -49,23 +50,28 @@ import Icon from 'astro-icon';
         /> -->
       </div>
     </section>
+  </Wrapper>
 
-    <section
-      data-inviewport="fade-slide-right"
-      class="bg-gray-900 flex flex-col gap-8 text-primary px-60 justify-center items-center text-center py-28"
-    >
+  <section
+    data-inviewport="fade-slide-right"
+    class="bg-gray-900 flex flex-col gap-8 text-primary justify-center items-center text-center py-28"
+  >
+    <Wrapper>
       <h1 class="text-6xl font-semibold">
         Your mental health is just as important as your physical health.
       </h1>
+
       <p class="text-2xl font-light translate-x-9">
         Don't wait until it's too late. Take the first step to relieve the pain and live a better
         life. Remember, pain might be inevitable, but suffering is optional.
       </p>
-    </section>
+    </Wrapper>
+  </section>
 
+  <Wrapper>
     <section
       data-inviewport="fade-slide-down"
-      class="flex flex-col gap-32 text-green-700 px-60 justify-center items-center py-28"
+      class="flex flex-col gap-32 text-green-700 justify-center items-center py-28"
     >
       <div class="flex flex-col gap-8 text-center">
         <h1 class="text-6xl font-semibold">
@@ -160,7 +166,7 @@ import Icon from 'astro-icon';
         </div>
       </div>
     </section>
-  </main>
+  </Wrapper>
 </Layout>
 
 <script>
