@@ -1,5 +1,5 @@
-import { add, eachDayOfInterval, format, isSameDay, setHours, startOfHour } from 'date-fns';
-import { type BookingHour } from '../../lib/firebase/types';
+import { add, eachDayOfInterval, format, setHours, startOfHour } from 'date-fns';
+import { BOOKING_HOUR_FORMAT, type BookingHour, type Expert } from '../../lib/firebase/types';
 import PrimaryButton from './shared/PrimaryButton';
 import { For, Show, createSignal } from 'solid-js';
 import { addDoc } from 'firebase/firestore';
@@ -10,7 +10,7 @@ export type BookingFormProps = {
   availableHoursPerDay: number[];
   takenHours: BookingHour[];
   userId: string;
-  expertId: string;
+  expert: Expert;
   class?: string;
 };
 
@@ -32,7 +32,7 @@ const BookingForm = (props: BookingFormProps) => {
         day: date,
         hours: props.availableHoursPerDay.filter((hour) => {
           const d = startOfHour(setHours(date, hour));
-          const isTaken = props.takenHours.includes(format(d, 'yyyy-MM-dd HH'));
+          const isTaken = props.takenHours.includes(format(d, BOOKING_HOUR_FORMAT));
 
           return !isTaken;
         }),
@@ -82,9 +82,15 @@ const BookingForm = (props: BookingFormProps) => {
     try {
       await addDoc(collections.bookings, {
         userId: props.userId,
-        expertId: props.expertId,
-        hour: format(setHours(day, hour), 'yyyy-MM-dd HH'),
+        hour: format(setHours(day, hour), BOOKING_HOUR_FORMAT),
         status: 'pending',
+        expertFullName: props.expert.fullName,
+        expertLocation: props.expert.location,
+        expertPricePerHour: props.expert.pricePerHour,
+        expertAcademicBackground: props.expert.academicBackground,
+        expertClinicalSpecialty: props.expert.clinicalSpecialty,
+        expertClinicName: props.expert.clinicName,
+        expertBiography: props.expert.biography,
         details,
       });
     } finally {
@@ -105,9 +111,9 @@ const BookingForm = (props: BookingFormProps) => {
               {(day) => (
                 <div
                   onClick={() => handleSelectDay(day)}
-                  class="text-center rounded-md border px-4 py-1 duration-200 cursor-pointer hover:border-primary-dark hover:text-primary-dark"
+                  class="text-center rounded-md border px-4 py-1 duration-200 cursor-pointer hover:border-primary hover:text-primary"
                   classList={{
-                    'border-primary-dark text-primary-dark': selectedDay() === day,
+                    'border-primary text-primary': selectedDay() === day,
                   }}
                 >
                   <div class="text-sm">{format(day.day, 'EEEE')}</div>
@@ -124,9 +130,9 @@ const BookingForm = (props: BookingFormProps) => {
               {(hour) => (
                 <div
                   onClick={() => handleSelectHour(hour)}
-                  class="text-center rounded-md border px-4 py-1 duration-200 cursor-pointer hover:border-primary-dark hover:text-primary-dark"
+                  class="text-center rounded-md border px-4 py-1 duration-200 cursor-pointer hover:border-primary hover:text-primary"
                   classList={{
-                    'border-primary-dark text-primary-dark': selectedHour() === hour,
+                    'border-primary text-primary': selectedHour() === hour,
                   }}
                 >
                   <div class="text-sm">{`${hour}:00 - ${hour + 1}:00`}</div>
@@ -163,7 +169,7 @@ const BookingForm = (props: BookingFormProps) => {
 
               <textarea
                 name="details"
-                class="mt-4 w-full border px-2 py-1 resize-y focus-visible:border-primary-dark min-h-[100px]"
+                class="mt-4 w-full border px-2 py-1 resize-y focus-visible:border-primary min-h-[100px]"
                 placeholder="What are you looking for?"
                 cols="30"
                 rows="10"

@@ -1,3 +1,5 @@
+import type { Timestamp } from 'firebase-admin/firestore';
+
 export type User = {
   id: string;
   name: string;
@@ -13,7 +15,7 @@ export type Expert = {
   fullName: string;
   biography: string;
   academicBackground: string[];
-  clinicalSpeciality: string;
+  clinicalSpecialty: string;
   startYear: number;
   location: string;
   clinicName: string;
@@ -28,21 +30,28 @@ export type Expert = {
 export type Booking = {
   id: string;
   userId: string;
-  expertId: string;
   details: string;
   hour: BookingHour;
   status: 'confirmed' | 'cancelled' | 'pending';
+  expertFullName: string;
+  expertBiography: string;
+  expertClinicName: string;
+  expertLocation: string;
+  expertPricePerHour: number;
+  expertAcademicBackground: string[];
+  expertClinicalSpecialty: string;
 };
 
-export type BookingChat = {
+export type BookingChatMessage = {
   id: string;
   bookingId: string;
-  message: string;
+  body: string;
   isSenderUser: boolean;
-  sentAt: Date;
+  sentAt: Timestamp;
 };
 
 /**
- * YEAR-MONTH-DATE:HOUR, e.g 2021-10-09:19.
+ * YEAR-MONTH-DATE:HOUR, e.g 2021-10-09 19.
  */
 export type BookingHour = string;
+export const BOOKING_HOUR_FORMAT = 'yyyy-MM-dd HH';

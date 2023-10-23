@@ -20,7 +20,7 @@ const expert: Expert = {
   biography:
     'Moses Julian, M.Psi, Psikolog adalah Psikolog Klinis yang aktif melayani pasien di Klinik Aditi Psychological Center. Moses Julian, M.Psi, Psikolog mendapatkan gelar Psikolog Klinis setelah menamatkan pendidikan di Universitas Airlangga, Universitas Padjadjaran.',
   academicBackground: ['Universitas Airlangga', 'Universitas Padjajaran'],
-  clinicalSpeciality:
+  clinicalSpecialty:
     'Stress dan gangguan kecemasan, depresi, permasalahan relasi, hubungan romantis, permasalahan keluarga dan pernikahan, pengembangan diri dan karir, quarter life crisis, self-esteem dan gangguan kepribadian dan mood.',
   startYear: 2007,
   location: 'Jakarta Selatan, Pancoran',
@@ -74,7 +74,7 @@ const moneyFormatter = new Intl.NumberFormat('id-ID', {
 
         <div class="flex flex-col gap-2">
           <h3 class="font-semibold text-xl">Clinical Speciality</h3>
-          <div class="text-slate-600 text-sm w-full break-words">{expert.clinicalSpeciality}</div>
+          <div class="text-slate-600 text-sm w-full break-words">{expert.clinicalSpecialty}</div>
         </div>
       </div>
 
@@ -111,7 +111,7 @@ const moneyFormatter = new Intl.NumberFormat('id-ID', {
           availableHoursPerDay={expert.availableHoursPerDay}
           takenHours={expert.takenHours}
           userId={claims.uid}
-          expertId={expert.id}
+          expert={expert}
           client:load
         />
       </div>

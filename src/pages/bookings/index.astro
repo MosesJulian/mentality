@@ -1,8 +1,8 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Wrapper from '../components/solid/shared/Wrapper';
-import authGuard from '../lib/firebase/auth/guard';
-import BookingList from '../components/solid/BookingList';
+import Layout from '../../layouts/Layout.astro';
+import Wrapper from '../../components/solid/shared/Wrapper';
+import authGuard from '../../lib/firebase/auth/guard';
+import BookingList from '../../components/solid/BookingList';
 
 const [response, ok] = await authGuard(Astro);
 if (!ok) return response;
@@ -13,6 +13,6 @@ if (!ok) return response;
     <h2 class="text-4xl font-semibold">Bookings</h2>
     <p class="text-slate-600 mt-4 text-sm">A list of all the bookings you've made.</p>
 
-    <BookingList class="mt-4" client:load />
+    <BookingList userId={response.uid} class="mt-4" client:load />
   </Wrapper>
 </Layout>

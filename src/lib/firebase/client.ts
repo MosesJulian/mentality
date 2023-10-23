@@ -9,8 +9,8 @@ import {
   type FirestoreDataConverter,
   QueryDocumentSnapshot,
 } from 'firebase/firestore';
-import { BOOKINGS_COL, EXPERTS_COL, USERS_COL } from './constants';
-import type { Booking, BookingChat, Expert, User } from './types';
+import { BOOKINGS_COL, BOOKING_CHAT_MESSAGES_COL, EXPERTS_COL, USERS_COL } from './constants';
+import type { Booking, BookingChatMessage, Expert, User } from './types';
 
 const firebaseConfig: FirebaseOptions = {
   apiKey: 'AIzaSyDz9XwIuBOMMXoic5LiKxRKbZW3FAtjRrk',
@@ -41,8 +41,12 @@ export const collections = {
   users: createCollection<Omit<User, 'id'>>(USERS_COL),
   experts: createCollection<Omit<Expert, 'id'>>(EXPERTS_COL),
   bookings: createCollection<Omit<Booking, 'id'>>(BOOKINGS_COL),
-  bookingChats: (bookingId: string) =>
-    createCollection<Omit<BookingChat, 'id'>>(BOOKINGS_COL, bookingId, 'chats'),
+  bookingChatMessages: (bookingId: string) =>
+    createCollection<Omit<BookingChatMessage, 'id'>>(
+      BOOKINGS_COL,
+      bookingId,
+      BOOKING_CHAT_MESSAGES_COL,
+    ),
 };
 
 export default app;

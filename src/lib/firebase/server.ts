@@ -7,8 +7,8 @@ import {
   QueryDocumentSnapshot,
   DocumentReference,
 } from 'firebase-admin/firestore';
-import { BOOKINGS_COL, BOOKING_CHATS_COL, EXPERTS_COL, USERS_COL } from './constants';
-import type { Booking, BookingChat, Expert, User } from './types';
+import { BOOKINGS_COL, BOOKING_CHAT_MESSAGES_COL, EXPERTS_COL, USERS_COL } from './constants';
+import type { Booking, BookingChatMessage, Expert, User } from './types';
 
 const serviceAccount = {
   type: 'service_account',
@@ -24,6 +24,7 @@ const serviceAccount = {
     'https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-r834c%40mentality-a0817.iam.gserviceaccount.com',
 };
 
+console.log('=============== initialize app ====================');
 const app = initializeApp({
   credential: cert(serviceAccount as ServiceAccount),
 });
@@ -47,9 +48,9 @@ export const collections = {
   users: createCollection<Omit<User, 'id'>>(USERS_COL),
   experts: createCollection<Omit<Expert, 'id'>>(EXPERTS_COL),
   bookings: createCollection<Omit<Booking, 'id'>>(BOOKINGS_COL),
-  bookingChats: (bookingId: string) =>
-    createCollection<Omit<BookingChat, 'id'>>(
-      BOOKING_CHATS_COL,
+  bookingChatMessages: (bookingId: string) =>
+    createCollection<Omit<BookingChatMessage, 'id'>>(
+      BOOKING_CHAT_MESSAGES_COL,
       collections.bookings.doc(bookingId),
     ),
 };

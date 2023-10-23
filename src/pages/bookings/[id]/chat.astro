@@ -1,0 +1,43 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Wrapper from '../../../components/solid/shared/Wrapper';
+import ChatBox from '../../../components/solid/ChatBox';
+import ChatBody from '../../../components/solid/ChatBody';
+import { collections } from '../../../lib/firebase/server';
+
+export const prerender = false;
+
+const { id: bookingId } = Astro.params;
+if (bookingId === undefined) return new Response({ status: 404 });
+
+const bookingDoc = await collections.bookings
+  .doc(bookingId)
+  .get()
+  .catch((e: Error) => {
+    console.error(e);
+    return e;
+  });
+
+if (bookingDoc instanceof Error) return new Response({ status: 500 });
+
+const booking = bookingDoc.data();
+if (booking === undefined) return new Response({ status: 404 });
+---
+
+<Layout title="Chat | Mentality・Where Mental Health is Our Priority">
+  <Wrapper>
+    <main class="h-[calc(100vh-200px)] my-4 flex flex-col gap-2">
+      <h2 class="text-4xl font-semibold">Chat</h2>
+      <div class="p-4 border flex flex-col rounded-lg h-[calc(100%-50px)] bg-gray-50/20">
+        <ChatBody
+          bookingId={bookingId}
+          expertName={booking?.expertFullName}
+          class="h-full"
+          client:load
+        />
+
+        <ChatBox bookingId={bookingId} class="mt-4" client:load />
+      </div>
+    </main>
+  </Wrapper>
+</Layout>
