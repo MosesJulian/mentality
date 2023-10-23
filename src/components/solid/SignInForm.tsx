@@ -1,7 +1,7 @@
 import { Show, createSignal, onMount } from 'solid-js';
 import { auth, collections, googleProvider } from '../../lib/firebase/client';
 import { browserSessionPersistence, signInWithPopup } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import PrimaryButton from './shared/PrimaryButton';
 
 const SignInForm = () => {
@@ -18,6 +18,8 @@ const SignInForm = () => {
       const { user } = await signInWithPopup(auth, googleProvider);
       if (user.email === null) return;
 
+      let redirectUrl = new URLSearchParams(window.location.search).get('redirect');
+
       const [response] = await Promise.all([
         new Promise<Response>(async (resolve) => {
           const idToken = await user.getIdToken();
@@ -30,15 +32,23 @@ const SignInForm = () => {
 
           resolve(response);
         }),
+        new Promise(async (resolve) => {
+          const userDocRef = doc(collections.users, user.uid);
+          const userDoc = await getDoc(userDocRef);
 
-        setDoc(doc(collections.users, user.uid), {
-          name: user.displayName ?? '',
-          email: user.email ?? '',
-          authProvider: 'google',
+          if (!userDoc.exists()) {
+            await setDoc(userDocRef, {
+              name: user.displayName ?? '',
+              email: user.email ?? '',
+              authProvider: 'google',
+            });
+
+            redirectUrl ??= '/profile';
+          }
+
+          resolve(null);
         }),
       ]);
-
-      const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
 
       if (redirectUrl !== null && redirectUrl.trim().length > 0) {
         window.location.assign(redirectUrl);

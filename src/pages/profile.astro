@@ -1,0 +1,31 @@
+---
+import ProfileForm from '../components/solid/ProfileForm';
+import Wrapper from '../components/solid/shared/Wrapper';
+import Layout from '../layouts/Layout.astro';
+import authGuard from '../lib/firebase/auth/guard';
+import { collections } from '../lib/firebase/server';
+export const prerender = false;
+
+const [response, ok] = await authGuard(Astro);
+if (!ok) return response;
+
+const userDoc = await collections.users
+  .doc(response.uid)
+  .get()
+  .catch((e: Error) => {
+    console.error(e);
+    return e;
+  });
+
+if (userDoc instanceof Error) return Response({ status: 500 });
+
+const user = userDoc.data();
+if (user === undefined) return Response({ status: 404 });
+---
+
+<Layout title="Profile | Mentality・Where Mental Health is Our Priority">
+  <Wrapper class="pyy-12">
+    <h2 class="text-4xl font-semibold w-2/3 break-words">Profile</h2>
+    <ProfileForm class="mt-6" user={{ id: userDoc.id, ...user }} client:load />
+  </Wrapper>
+</Layout>

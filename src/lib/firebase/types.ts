@@ -8,6 +8,7 @@ export type User = {
   phoneNumber?: string;
   dateOfBirth?: string;
   gender?: string;
+  notes?: string;
 };
 
 export type Expert = {

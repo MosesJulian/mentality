@@ -1,6 +1,9 @@
 ---
 import Footer from '../components/solid/layout/Footer';
 import Header from '../components/solid/layout/Header';
+import getCookieClaims from '../lib/firebase/auth/getCookieClaims';
+import { collections } from '../lib/firebase/server';
+import type { User } from '../lib/firebase/types';
 type Props = {
   title: string;
   class?: string;
@@ -9,6 +12,27 @@ type Props = {
 const { title, class: className } = Astro.props;
 
 const currentYear = new Date().getFullYear();
+
+const user = await (async () => {
+  const sessionCookie = Astro.cookies.get('session')?.value;
+  if (sessionCookie === undefined) return undefined;
+
+  const claims = await getCookieClaims(sessionCookie);
+  if (claims === undefined) return undefined;
+
+  const userDoc = await collections.users
+    .doc(claims.uid)
+    .get()
+    .catch((e: Error) => {
+      console.error(e);
+      return e;
+    });
+
+  if (userDoc instanceof Error) return userDoc;
+  return userDoc.data();
+})();
+
+if (user instanceof Error) return Response({ status: 500 });
 ---
 
 <!doctype html>
@@ -27,7 +51,7 @@ const currentYear = new Date().getFullYear();
   </head>
 
   <body class="relative">
-    <Header client:load />
+    <Header userName={user?.name} client:load />
 
     <main class:list={['flex flex-col', className]}>
       <slot />
