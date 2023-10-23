@@ -14,7 +14,7 @@ const serviceAccount = {
   type: 'service_account',
   project_id: 'mentality-a0817',
   private_key_id: import.meta.env.FIREBASE_PRIVATE_KEY_ID,
-  private_key: JSON.parse(import.meta.env.FIREBASE_PRIVATE_KEY),
+  private_key: import.meta.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
   client_email: 'firebase-adminsdk-r834c@mentality-a0817.iam.gserviceaccount.com',
   client_id: '102303589187522695451',
   auth_uri: 'https://accounts.google.com/o/oauth2/auth',
@@ -24,7 +24,6 @@ const serviceAccount = {
     'https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-r834c%40mentality-a0817.iam.gserviceaccount.com',
 };
 
-console.log('=============== initialize app ====================');
 const app = initializeApp({
   credential: cert(serviceAccount as ServiceAccount),
 });
