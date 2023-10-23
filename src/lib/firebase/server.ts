@@ -13,8 +13,8 @@ import type { Booking, BookingChatMessage, Expert, User } from './types';
 const serviceAccount = {
   type: 'service_account',
   project_id: 'mentality-a0817',
-  private_key_id: import.meta.env.FIREBASE_PRIVATE_KEY_ID,
-  private_key: import.meta.env.FIREBASE_PRIVATE_KEY,
+  private_key_id: import.meta.env.FIREBASE_PRIVATE_KEY_IDfea,
+  private_key: JSON.parse(import.meta.env.FIREBASE_PRIVATE_KEY),
   client_email: 'firebase-adminsdk-r834c@mentality-a0817.iam.gserviceaccount.com',
   client_id: '102303589187522695451',
   auth_uri: 'https://accounts.google.com/o/oauth2/auth',
